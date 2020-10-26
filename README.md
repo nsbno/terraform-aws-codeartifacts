@@ -4,9 +4,11 @@ A terraform module for AWS CodeArtifacts
 Before you can connect to this repository, you must install the AWS CLI and configure your AWS credentials. AWS CodeArtifact is supported in these CLI versions:
 
 1.18.83 or later. Install the AWS CLI version 1
+
 2.0.54 or later. Install the AWS CLI version 2
 
-Connection instruction for Gradle:
+
+**Connection instruction for Gradle**
 
 **Pulling from repo:**
 
