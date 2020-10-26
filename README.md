@@ -9,6 +9,7 @@ Before you can connect to this repository, you must install the AWS CLI and conf
 Connection instruction for Gradle:
 
 **Pulling from repo:**
+
 1. Export a CodeArtifact authorization token for authorization to your repository from your preferred shell (token expires in 12 hours).
 export CODEARTIFACT_AUTH_TOKEN=`aws codeartifact get-authorization-token --domain $domain --domain-owner $account_id --query authorizationToken --output text`
 
