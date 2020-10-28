@@ -6,21 +6,9 @@ resource "aws_codeartifact_domain" "codeartifact_domain" {
   encryption_key = aws_kms_key.codeartifact_domain.arn
 }
 
-resource "aws_codeartifact_domain_permissions_policy" "test" {
+resource "aws_codeartifact_domain_permissions_policy" "domain_policy" {
   domain          = aws_codeartifact_domain.codeartifact_domain.domain
-  policy_document = <<EOF
-{
-    "Version": "2012-10-17",
-    "Statement": [
-        {
-            "Action": "codeartifact:CreateRepository",
-            "Effect": "Allow",
-            "Principal": "*",
-            "Resource": "${aws_codeartifact_domain.codeartifact_domain.arn}"
-        }
-    ]
-}
-EOF
+  policy_document = data.aws_iam_policy_document.codeartifacts_domain_policy.json
 }
 
 resource "aws_codeartifact_repository" "codeartifact_repo" {
@@ -28,20 +16,8 @@ resource "aws_codeartifact_repository" "codeartifact_repo" {
   domain     = aws_codeartifact_domain.codeartifact_domain.domain
 }
 
-resource "aws_codeartifact_repository_permissions_policy" "example" {
+resource "aws_codeartifact_repository_permissions_policy" "repo_policy" {
   repository      = aws_codeartifact_repository.codeartifact_repo.repository
   domain          = aws_codeartifact_domain.codeartifact_domain.domain
-  policy_document = <<EOF
-{
-    "Version": "2012-10-17",
-    "Statement": [
-        {
-            "Action": "codeartifact:CreateRepository",
-            "Effect": "Allow",
-            "Principal": "*",
-            "Resource": "${aws_codeartifact_domain.codeartifact_domain.arn}"
-        }
-    ]
-}
-EOF
+  policy_document = data.aws_iam_policy_document.codeartifacts_repo_policy.json
 }
