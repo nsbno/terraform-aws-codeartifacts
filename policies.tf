@@ -1,24 +1,40 @@
-data "aws_iam_policy_document" "lambda_assume" {
+data "aws_iam_policy_document" "codeartifacts_repo_policy" {
   statement {
     effect  = "Allow"
-    actions = ["sts:AssumeRole"]
+    actions = ["codeartifact:DescribePackageVersion",
+                "codeartifact:DescribeRepository",
+                "codeartifact:GetPackageVersionReadme",
+                "codeartifact:GetRepositoryEndpoint",
+                "codeartifact:ListPackageVersionAssets",
+                "codeartifact:ListPackageVersionDependencies",
+                "codeartifact:ListPackageVersions",
+                "codeartifact:ListPackages",
+                "codeartifact:PublishPackageVersion",
+                "codeartifact:PutPackageMetadata",
+                "codeartifact:ReadFromRepository"
+                ]
     principals {
-      identifiers = ["lambda.amazonaws.com"]
-      type        = "Service"
+      type        = "*"
+      identifiers = ["*"]
     }
+    resources = ["*"]
   }
 }
-data "aws_iam_policy_document" "sns_topic_policy" {
-  count = var.sns_mobile != "" ? 1 : 0
+
+data "aws_iam_policy_document" "codeartifacts_domain_policy" {
   statement {
     effect  = "Allow"
-    actions = ["SNS:Publish"]
-
+    actions =  ["codeartifact:CreateRepository",
+                "codeartifact:DescribeDomain",
+                "codeartifact:GetAuthorizationToken",
+                "codeartifact:GetDomainPermissionsPolicy",
+                "codeartifact:ListRepositoriesInDomain",
+                "sts:GetServiceBearerToken"
+                ]
     principals {
-      type        = "Service"
-      identifiers = ["events.amazonaws.com"]
+      type        = "*"
+      identifiers = ["*"]
     }
-
-    resources = [aws_sns_topic.aws_logins[count.index].arn]
+    resources = [aws_codeartifact_domain.codeartifact_domain.arn]
   }
 }
