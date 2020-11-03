@@ -1,4 +1,4 @@
-# terraform-aws-codeArtifacts
+# terraform-aws-codeartifacts
 A terraform module for AWS CodeArtifacts
 
 Before you can connect to this repository, you must install the AWS CLI and configure your AWS credentials. AWS CodeArtifact is supported in these CLI versions:

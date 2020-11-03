@@ -14,8 +14,8 @@ data "aws_iam_policy_document" "codeartifacts_repo_policy" {
                 "codeartifact:ReadFromRepository"
                 ]
     principals {
-      type        = "*"
-      identifiers = ["*"]
+      type        = "AWS"
+      identifiers = ["arn:aws:iam::${local.current_account_id}:root"]
     }
     resources = ["*"]
   }
@@ -32,9 +32,9 @@ data "aws_iam_policy_document" "codeartifacts_domain_policy" {
                 "sts:GetServiceBearerToken"
                 ]
     principals {
-      type        = "*"
-      identifiers = ["*"]
+      type        = "AWS"
+      identifiers = ["arn:aws:iam::${local.current_account_id}:root"]
     }
-    resources = [aws_codeartifact_domain.codeartifact_domain.arn]
+    resources = ["*"]
   }
 }

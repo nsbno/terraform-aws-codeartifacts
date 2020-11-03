@@ -1,8 +1,14 @@
+data "aws_caller_identity" "current" {}
+
+locals {
+  current_account_id = data.aws_caller_identity.current.account_id
+}
+
 resource "aws_kms_key" "codeartifact_domain" {
   description = "domain key"
 }
 resource "aws_codeartifact_domain" "codeartifact_domain" {
-  domain         = "${var.name_prefix}-codeartifact-${var.env}"
+  domain         = "${var.name_prefix}-${var.env}-codeartifact"
   encryption_key = aws_kms_key.codeartifact_domain.arn
 }
 
@@ -12,7 +18,7 @@ resource "aws_codeartifact_domain_permissions_policy" "domain_policy" {
 }
 
 resource "aws_codeartifact_repository" "codeartifact_repo" {
-  repository = "${var.name_prefix}_repo"
+  repository = "${var.name_prefix}-repo"
   domain     = aws_codeartifact_domain.codeartifact_domain.domain
 }
 
