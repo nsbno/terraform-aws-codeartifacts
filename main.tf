@@ -5,7 +5,11 @@ locals {
 }
 
 resource "aws_kms_key" "codeartifact_domain" {
-  description = "domain key"
+  description = "codeartifact domain key"
+}
+resource "aws_kms_alias" "a" {
+  name          = "alias/codeartifact-domain"
+  target_key_id = aws_kms_key.codeartifact_domain.key_id
 }
 resource "aws_codeartifact_domain" "codeartifact_domain" {
   domain         = "${var.name_prefix}-codeartifact"
@@ -18,12 +22,14 @@ resource "aws_codeartifact_domain_permissions_policy" "domain_policy" {
 }
 
 resource "aws_codeartifact_repository" "codeartifact_repo" {
-  repository = "${var.name_prefix}-repo"
+  for_each = var.repos
+  repository = "${each.key}-${var.name_prefix}"
   domain     = aws_codeartifact_domain.codeartifact_domain.domain
 }
 
 resource "aws_codeartifact_repository_permissions_policy" "repo_policy" {
-  repository      = aws_codeartifact_repository.codeartifact_repo.repository
+  for_each = var.repos
+  repository      = aws_codeartifact_repository.codeartifact_repo[each.key].repository
   domain          = aws_codeartifact_domain.codeartifact_domain.domain
   policy_document = data.aws_iam_policy_document.codeartifacts_repo_policy.json
 }
