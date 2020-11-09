@@ -23,7 +23,7 @@ resource "aws_codeartifact_domain_permissions_policy" "domain_policy" {
 
 resource "aws_codeartifact_repository" "codeartifact_repo" {
   for_each = var.repos
-  repository = "${each.key}-${var.name_prefix}"
+  repository = "${each.key}"
   domain     = aws_codeartifact_domain.codeartifact_domain.domain
 }
 
