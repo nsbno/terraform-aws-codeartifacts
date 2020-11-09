@@ -8,7 +8,7 @@ resource "aws_kms_key" "codeartifact_domain" {
   description = "domain key"
 }
 resource "aws_codeartifact_domain" "codeartifact_domain" {
-  domain         = "${var.name_prefix}-${var.env}-codeartifact"
+  domain         = "${var.name_prefix}-codeartifact"
   encryption_key = aws_kms_key.codeartifact_domain.arn
 }
 
